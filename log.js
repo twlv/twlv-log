@@ -1,7 +1,11 @@
 const { State } = require('./state');
+const { EventEmitter } = require('events');
 
-class Log {
-  constructor ({ node, id }) {
+class Log extends EventEmitter {
+  constructor ({ prefix = 'log', node, id }) {
+    super();
+
+    this.prefix = prefix;
     this.id = id;
     this.node = node;
     this.entries = [];
@@ -14,7 +18,7 @@ class Log {
   }
 
   get command () {
-    return `log:${this.id}`;
+    return `${this.prefix}:${this.id}`;
   }
 
   get address () {
@@ -107,10 +111,10 @@ class Log {
     return state;
   }
 
-  async append (data) {
+  async append (data, options = {}) {
     let { address } = this;
     let { t, c } = this.getState(address).next();
-    let entry = { address, t, c, data };
+    let entry = Object.assign({ address, t, c, data }, options);
 
     await this.put(entry);
 
