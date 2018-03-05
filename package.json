@@ -1,8 +1,12 @@
 {
   "name": "twlv-log",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "twlv log implementation",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/twlv/twlv-log.git"
+  },
   "scripts": {
     "lint": "eslint .",
     "test": "mocha test/**",
