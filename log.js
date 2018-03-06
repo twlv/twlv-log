@@ -134,6 +134,8 @@ class Log extends EventEmitter {
 
       entries.push(entry);
       this.getState(entry.address).update(entry);
+
+      this.emit('entry', entry);
     });
 
     this.entries = entries.sort((entry1, entry2) => State.compare(entry1, entry2));
