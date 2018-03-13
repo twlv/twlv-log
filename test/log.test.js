@@ -1,8 +1,7 @@
 const { Log } = require('..');
 const { Node } = require('@twlv/core');
-const MemoryDialer = require('@twlv/core/dialers/memory');
-const MemoryListener = require('@twlv/core/listeners/memory');
-const MemoryFinder = require('@twlv/core/finders/memory');
+const { MemoryDialer, MemoryListener } = require('@twlv/core/transports/memory');
+const { MemoryFinder } = require('@twlv/core/finders/memory');
 const assert = require('assert');
 
 describe('Log', () => {

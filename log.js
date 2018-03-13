@@ -76,7 +76,7 @@ class Log extends EventEmitter {
       action: 'getentries',
       body: this.states,
     });
-    await this.node.send(address, { command, payload });
+    await this.node.send({ to: address, command, payload });
   }
 
   async _flightEntries (address, entries) {
@@ -89,7 +89,7 @@ class Log extends EventEmitter {
       action: 'entries',
       body: entries,
     });
-    await this.node.send(address, { command, payload });
+    await this.node.send({ to: address, command, payload });
   }
 
   async sync (address) {
@@ -98,7 +98,7 @@ class Log extends EventEmitter {
       action: 'sync',
       body: this.states,
     });
-    await this.node.send(address, { command, payload });
+    await this.node.send({ to: address, command, payload });
   }
 
   getState (address) {
