@@ -31,20 +31,37 @@ class Log extends EventEmitter {
     }
 
     let { action, body } = JSON.parse(message.payload);
+    // console.log('>', this.node.identity.address, action, body);
     if (action === 'sync') {
       let isAhead = Boolean(body.length === 0);
       let behindStates = [];
-      body.forEach(peerState => {
+
+      let addresses = this.states.map(s => s.address);
+
+      let peerStateMap = {};
+      body.forEach(s => {
+        peerStateMap[s.address] = s;
+        if (addresses.indexOf(s.address) === -1) {
+          addresses.push(s.address);
+        }
+      });
+
+      addresses.forEach(address => {
+        let state = this.getState(address);
+        let peerState = peerStateMap[address] || new State({ address });
+
+        let delta = state.compare(peerState);
+
+        if (delta > 0) {
+          isAhead = true;
+        }
+
         if (peerState.address === this.address) {
           return;
         }
 
-        let state = this.getState(peerState.address);
-        let delta = state.compare(peerState);
         if (delta < 0) {
           behindStates.push(state);
-        } else if (delta > 0) {
-          isAhead = true;
         }
       });
 

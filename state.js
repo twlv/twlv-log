@@ -10,6 +10,10 @@ class State {
       return -1;
     } else if (state1.c > state2.c) {
       return 1;
+    } else if (state1.address < state2.address) {
+      return -1;
+    } else if (state1.address > state2.address) {
+      return 1;
     }
 
     return 0;

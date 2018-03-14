@@ -48,6 +48,33 @@ describe('Log', () => {
         try { await node2.stop(); } catch (err) {}
       }
     });
+
+    it('partial sync', async () => {
+      let node1 = createNode();
+      let node2 = createNode();
+
+      try {
+        await node1.start();
+        await node2.start();
+
+        let log1 = new Log({ node: node1, id: 'foo' });
+        let log2 = new Log({ node: node2, id: 'foo' });
+
+        log1.append('foo');
+        log2.append('bar');
+
+        log2.sync(node1.identity.address);
+
+        await sleep(100);
+
+        assert.deepEqual(log1.getState(node1.identity.address), log2.getState(node1.identity.address));
+        assert.deepEqual(log1.getState(node2.identity.address), log2.getState(node2.identity.address));
+        assert.deepEqual(log1.entries, log2.entries);
+      } finally {
+        try { await node1.stop(); } catch (err) {}
+        try { await node2.stop(); } catch (err) {}
+      }
+    });
   });
 });
 
