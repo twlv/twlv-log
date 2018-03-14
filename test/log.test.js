@@ -5,13 +5,8 @@ const { MemoryFinder } = require('@twlv/core/finders/memory');
 const assert = require('assert');
 
 describe('Log', () => {
-  before(() => {
-    process.on('unhandledRejection', err => console.error('Unhandled', err));
-  });
-
-  after(() => {
-    process.removeAllListeners('unhandledRejection');
-  });
+  before(() => process.on('unhandledRejection', err => console.error('Unhandled', err)));
+  after(() => process.removeAllListeners('unhandledRejection'));
 
   describe('#append()', () => {
     it('push to entries', async () => {
@@ -36,8 +31,6 @@ describe('Log', () => {
         await node1.start();
         await node2.start();
 
-        // console.log('started');
-
         let log1 = new Log({ node: node1, id: 'foo' });
         let log2 = new Log({ node: node2, id: 'foo' });
 
@@ -51,8 +44,6 @@ describe('Log', () => {
         assert.deepEqual(log1.states, log2.states);
         assert.deepEqual(log1.entries, log2.entries);
       } finally {
-        // console.log('stopping');
-
         try { await node1.stop(); } catch (err) {}
         try { await node2.stop(); } catch (err) {}
       }

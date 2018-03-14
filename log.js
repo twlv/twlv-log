@@ -31,7 +31,6 @@ class Log extends EventEmitter {
     }
 
     let { action, body } = JSON.parse(message.payload);
-    // console.log(this.address, '| onmessage', action, JSON.stringify(body));
     if (action === 'sync') {
       let isAhead = Boolean(body.length === 0);
       let behindStates = [];
